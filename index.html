@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>My Home</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">My Home</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Climate
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">My Home</h1>
+        <p class="lead"><span id="current_temp"></span>°C, <span id="current_humi"></span>% Humidity at <span id="current_time"></span></p>
+        <div class="hidden-sm"><canvas c id="line-chartcanvas" width="400" height="150"></canvas></div>
+        <br />
+        <hr />
+        <br />
+        <h5>Current Outside Temperature for Newcastle upon Tyne, UK</h5>
+        <p><span id="api_temp"></span>°C, <span id="api_humi"></span>% Humidity. Highs of <span id="api_max"></span>°C and lows of <span id="api_min"></span>°C. <br /><span id="api_desc"></span>.</p>
+        <br />
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">All Time</th>
+                <th scope="col">Yesterday</th>
+                <th scope="col">Today</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Average Temperature</th>
+                <td><span id="aavgtemp"></span>°C</td>
+                <td><span id="yavgtemp"></span>°C</td>
+                <td><span id="tavgtemp"></span>°C</td>
+              </tr>
+              <tr>
+                <th scope="row">Average Humidity</th>
+                <td><span id="aavghumi"></span>%</td>
+                <td><span id="yavghumi"></span>%</td>
+                <td><span id="tavghumi"></span>%</td>
+              </tr>
+              <tr>
+                <th scope="row">Temperature Highs</th>
+                <td><span id="amaxtemp"></span>°C</td>
+                <td><span id="ymaxtemp"></span>°C</td>
+                <td><span id="tmaxtemp"></span>°C</td>
+              </tr>
+              <tr>
+                <th scope="row">Temperature Lows</th>
+                <td><span id="amintemp"></span>°C</td>
+                <td><span id="ymintemp"></span>°C</td>
+                <td><span id="tmintemp"></span>°C</td>
+              </tr>
+              <tr>
+                <th scope="row">Humidity Highs</th>
+                <td><span id="amaxhumi"></span>%</td>
+                <td><span id="ymaxhumi"></span>%</td>
+                <td><span id="tmaxhumi"></span>%</td>
+              </tr>
+                <tr>
+                <th scope="row">Humidity Lows</th>
+                <td><span id="aminhumi"></span>%</td>
+                <td><span id="yminhumi"></span>%</td>
+                <td><span id="tminhumi"></span>%</td>
+                </tr>
+            </tbody>
+          </table>
+          <br />
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.js"></script>
+  <script src="vendor/Chart.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+          $(document).ready(function(){
+        
+        
+          setInterval(sendRequest, 300000); // The interval set to 5 minutes
+          setInterval(sendRequest1, 30000); // The interval set to 30 seconds
+          sendRequest1();
+          function sendRequest1(){
+            var number = Math.floor((Math.random() * 8) + 1);
+              $.ajax({
+                url: 'request.php?data=values',
+                method: 'post',
+                data: {
+                  s: number
+                },
+                success: function(response) {
+                  var data = jQuery.parseJSON(response);
+                  $("#current_temp").html(data.temperature);
+                  $("#current_humi").html(data.humidity);
+                  $("#current_time").html(data.timestamp);
+
+                  $("#api_temp").html(data.api_temp);
+                  $("#api_humi").html(data.api_humi);
+                  $("#api_max").html(data.api_max);
+                  $("#api_min").html(data.api_min);
+                  $("#api_desc").html(data.api_desc);
+
+
+                  $("#aavghumi").html(data.aavghumi);
+                  $("#yavghumi").html(data.yavghumi);
+                  $("#tavghumi").html(data.tavghumi);
+
+                  $("#aavgtemp").html(data.aavgtemp);
+                  $("#yavgtemp").html(data.yavgtemp);
+                  $("#tavgtemp").html(data.tavgtemp);
+
+                  $("#amintemp").html(data.amintemp);
+                  $("#ymintemp").html(data.ymintemp);
+                  $("#tmintemp").html(data.tmintemp);
+
+                  $("#amaxhumi").html(data.amaxhumi);
+                  $("#ymaxhumi").html(data.ymaxhumi);
+                  $("#tmaxhumi").html(data.tmaxhumi);
+
+                  $("#aminhumi").html(data.aminhumi);
+                  $("#yminhumi").html(data.yminhumi);
+                  $("#tminhumi").html(data.tminhumi);
+
+                  $("#amintemp").html(data.amintemp);
+                  $("#ymintemp").html(data.ymintemp);
+                  $("#tmintemp").html(data.tmintemp);
+
+                  $("#amaxtemp").html(data.amaxtemp);
+                  $("#ymaxtemp").html(data.ymaxtemp);
+                  $("#tmaxtemp").html(data.tmaxtemp);
+
+
+        
+                },
+                beforeSend: function() {
+        
+                  $("#current_temp").html("Pending...");
+        
+                }
+            });
+          };
+
+
+
+  sendRequest();
+  function sendRequest(){
+  $.ajax({
+    url : "request.php?data=temp",
+    type : "GET",
+    success : function(data){
+      console.log(data);
+
+      var temperature = [];
+      //var humidity = [];
+      var time = [];
+
+      for (var i in data) {
+                        temperature.push(data[i].temperature);
+                        //humidity.push(data[i].humidity);
+                        time.push(data[i].timestamp);
+                    }
+      var ctx = $("#line-chartcanvas");
+      var data = {
+        //["match1", "match2", "match3", "match4", "match5"]
+        labels : time,
+        datasets : [
+          {
+            label : "Temperature °C",
+            data : temperature,
+            backgroundColor : "red",
+            borderColor : "red",
+            fill : false,
+            lineTension : 0,
+            pointRadius : 5
+          }]
+      };
+
+      var options = {
+        title : {
+          display : true,
+          position : "top",
+          text : "Inside Climate - Today's Data",
+          fontSize : 18,
+          fontColor : "#111"
+        },
+        legend : {
+          display : true,
+          position : "bottom"
+        }
+      };
+
+      var chart = new Chart( ctx, {
+        type : "line",
+        data : data,
+        options : options
+      } );
+
+    },
+    error : function(data) {
+      console.log(data);
+    }
+  });
+
+}
+
+
+        });
+        </script>
+</body>
+
+</html>

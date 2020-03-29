@@ -1,4 +1,4 @@
-# Home - Raspberry Pi Zero W Temperature Sensor
+# Raspberry Pi Zero W Temperature Sensor
 
 <strong>Materials:</strong><br />
 Raspberry Pi Zero W<br />

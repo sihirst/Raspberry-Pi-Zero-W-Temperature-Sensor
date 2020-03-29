@@ -6,7 +6,7 @@ DHT22 temperature and humidity sensor<br />
 Somewhere to host your api
 
 <strong>Guide:</strong><br />
-1. Cofigure your Raspberry Pi by following an online tutorial.
+1. Configure your Raspberry Pi by following an online tutorial.
 2. Login to your Pi using ssh e.g. ssh pi@192.168.0.38 password raspberry (default).
 3. Upload the temperature and humdity recording software tempsensor.py.
 4. Now upload launcher.sh and follow the tutorial by instructables to launch tempsensor.py on start up (https://www.instructables.com/id/Raspberry-Pi-Launch-Python-script-on-startup/).
